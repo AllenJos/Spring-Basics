@@ -14,4 +14,15 @@ public class CreatePersonRequest {
     private String lastName;
     @NotBlank(message = "DOB cannot be empty.")
     private String dob;
+
+
+    public Person to(){
+        Person person = Person.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .dob(dob)
+                .build();
+
+        return person;
+    }
 }

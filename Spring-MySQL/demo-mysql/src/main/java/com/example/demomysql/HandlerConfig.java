@@ -24,4 +24,10 @@ public class HandlerConfig {
 
         return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(BadPersonRequestException.class)
+    public ResponseEntity handleBadPersonRequestException(BadPersonRequestException ex){
+        String message = ex.getMessage();
+        return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
+    }
 }
