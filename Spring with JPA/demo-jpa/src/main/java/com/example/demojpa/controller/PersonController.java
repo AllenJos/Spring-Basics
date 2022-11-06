@@ -1,8 +1,10 @@
 package com.example.demojpa.controller;
 
 import com.example.demojpa.exception.PersonNotFoundException;
+import com.example.demojpa.model.Author;
 import com.example.demojpa.model.CreatePersonRequest;
 import com.example.demojpa.model.Person;
+import com.example.demojpa.repository.AuthorRepository;
 import com.example.demojpa.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,9 @@ public class PersonController {
     @Autowired
     PersonService personService;
 
+    @Autowired
+    AuthorRepository authorRepository;
+
     private static Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     @PostMapping("/person")
@@ -40,6 +45,16 @@ public class PersonController {
     @GetMapping("/person/all")
     public List<Person> getAllPerson(){
         return personService.getPeople();
+    }
+
+    @PostMapping("/author")
+    public Author createAuthor(@RequestParam("name") String name, @RequestParam("age") Integer age){
+        Author author = Author.builder()
+                .authorName(name)
+                .age(age)
+                .build();
+
+        return authorRepository.save(author);
     }
 
 //    @DeleteMapping("person/{id}")
