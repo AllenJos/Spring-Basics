@@ -1,24 +1,25 @@
 package com.example.demosecurity.config;
 
-import org.springframework.cglib.proxy.NoOp;
+import com.example.demosecurity.service.MyUserDetailsService;
+import org.hibernate.bytecode.enhance.internal.tracker.NoopCollectionTracker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 
-//@Configuration
-public class DemoConfig extends WebSecurityConfigurerAdapter {
+@Configuration
+public class UserConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    MyUserDetailsService myUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("Karan").password("karan123").authorities("qa")
-                .and()
-                .withUser("Rashmi").password("rashmi123").authorities("dev");
+        auth.userDetailsService(myUserDetailsService);
     }
 
     @Override
@@ -33,6 +34,6 @@ public class DemoConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     PasswordEncoder getPE(){
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 }
